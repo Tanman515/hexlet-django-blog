@@ -1,28 +1,19 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Начальная Страница</title>
-</head>
-<body>
-    <header>
-        <h1>Добро пожаловать на мою страницу!</h1>
-    </header>
-    <nav>
-        <!-- Навигационное меню -->
-    </nav>
-    <section>
-        <article>
-            <h2>Заголовок статьи</h2>
-            <p>Приложение {{ app_name }}.</p>
-        </article>
-    </section>
-    <aside>
-        <!-- Боковая панель или виджеты -->
-    </aside>
-    <footer>
-        <p>© 2024 Ваше Имя</p>
-    </footer>
-</body>
-</html>
+{% extends "base.html" %}
+
+
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+    <h1>Список статей</h1>
+    {% for article in articles %}
+        <h2><a href="{% url 'current_article' id=article.id %}">{{ article.name }}</a></h2>
+        <div>{{ article.body|slice:":200" }}</div>
+        <a href="{% url 'articles_update' id=article.id %}">Редактировать статью</a>
+    {% endfor %}
+<p><a href="{% url 'articles_create' %}">Создать форму</a></p>
+{% endblock %}
